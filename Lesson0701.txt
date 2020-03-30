@@ -1,0 +1,16 @@
+-- Урок 7 
+-- 1. Список юзерс которые сделали заказ в интернет магазине
+
+SELECT users.id users_id, users.name, orders.id orders_id
+FROM users
+JOIN orders
+ON users.id = orders.user_id;
+
+ -- 2. Список товаров и разделов каталога
+ SELECT p.desription, p.name, c.name, p.catalog_id
+ FROM
+ products p
+ JOIN 
+ catalogs c
+ ON 
+ p.catalog_id = c.id;
