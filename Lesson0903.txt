@@ -1,0 +1,15 @@
+-- Урок 9. Транзакции, переменные, представления
+-- Задание 1.Перемещение записи d =1
+START TRANSACTION;
+	INSERT INTO sample.users SELECT * FROM shop.users WHERE id = 5;		
+	DELETE FROM shop.users WHERE id = 5 LIMIT 1;
+COMMIT;
+
+-- Задание 2 Создать представление
+CREATE OR REPLACE VIEW products_catalogs AS
+SELECT
+p.name AS product,
+c.name AS catalog
+FROM products AS p
+JOIN catalogs AS c
+ON p.catalog_id = c.id;

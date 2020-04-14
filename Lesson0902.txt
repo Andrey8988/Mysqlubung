@@ -1,0 +1,14 @@
+-- Хранимые процедуры и триггеры
+-- Задание 2 создать хранимую функцию
+DELIMITER *
+CREATE TRIGGER stopor_null BEFORE INSERT ON products
+FOR EACH ROW BEGIN
+	IF NEW.name IS NULL || NEW.desription IS NULL THEN
+	SIGNAL SQLSTATE '45000'
+	SET MESSAGE_TEXT = 'ERROR';
+	END IF;
+END *
+DELIMITER ;
+INSERT INTO products (name, desription, price, catalog_id)
+VALUES ('wer', NULL, 589, 2);
+DELETE FROM products WHERE id = 20;

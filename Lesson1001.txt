@@ -1,0 +1,21 @@
+-- Урок 10. Задание 1
+
+CREATE INDEX town ON profiles(city);
+CREATE INDEX title ON media(filename);
+CREATE INDEX person ON users(first_name, last_name);
+SELECT last_name FROM users;
+
+-- Задание 2
+SELECT DISTINCT communities.name com_name,
+COUNT(communities_users.user_id) OVER(PARTITION by communities.id) namb_usr, -- users ins group
+COUNT(communities_users.user_id) OVER() / (SELECT COUNT(*) FROM communities) average, -- среднее
+COUNT(communities_users.user_id) OVER(PARTITION by communities.id) / 
+COUNT(communities_users.user_id) OVER() part, 	-- доля группы в системе
+COUNT(communities_users.user_id) OVER() namber_users,
+FIRST_VALUE(communities_users.user_id) OVER(PARTITION BY communities.id ORDER BY profiles.birthday DESC) young,
+FIRST_VALUE(communities_users.user_id) OVER(PARTITION BY communities.id ORDER BY profiles.birthday) old
+FROM communities
+JOIN communities_users
+  ON communities_users.community_id = communities.id
+JOIN profiles
+  ON profiles.user_id = communities_users.user_id;
