@@ -1,0 +1,247 @@
+
+-- Таблица Объект госпрограммы
+DROP TABLE IF EXISTS object;
+
+CREATE TABLE object (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, -- код объекта
+  obj_name VARCHAR(100) NOT NULL,		 -- название объекта
+  obj_adress VARCHAR(100) NOT NULL, 	 -- адрес объекта
+  obj_email VARCHAR(120) NOT NULL UNIQUE, -- почта объекта
+  obj_phone VARCHAR(120) NOT NULL UNIQUE, -- телефон
+  fed_dist VARCHAR(100)	NOT NULL  -- федеральный округ
+  );
+ ALTER TABLE object
+  ADD CONSTRAINT feddd 
+    FOREIGN KEY (fed_dist) REFERENCES fed_district(fd_name);
+   
+ INSERT INTO
+  object (obj_name, obj_adress, obj_email, obj_phone, fed_dist)
+VALUES
+  ('Больница №2', '111345 Самотлор ул Правды 1', 'bol3@sdu.ru', '75639132132', 'Восточный'),
+  ('Больница №33', '122345 Норильск ул Пигаль 4', 'bol33@sdu.ru', '76546565662', 'Сибирский' ),
+  ('Больница №44', '115645 Омск ул Иванова 1', 'bo44@sdu.ru', '8563213245454', 'Уральский'),
+  ('Больница №22', '114545 Самотлор ул Красная 8', 'bol22@sdu.ru', '8564532132', 'Западно-Сибирский'),
+  ('Мединститут Б', '144445 Санкт-Петербург, ул Зака, 1', 'acad2@smed.ru', '85632155132', 'Северо-Западный'),
+  ('Мединститут А', '111345, Томск, ул Папы, 1', 'medic1@sdu.ru', '85632132442', 'Западно-Сибирский'),
+  ('Училище №1', '331345, Новгород, ул Паперника, 1', 'гср1@sdu.ru', '85631132144', 'Северо-Западный'),
+  ('Завод медоборуд', '677345, Псков, ул Изиды, 1', 'zavod11@sdu.ru', '85634562132', 'Западный'),
+  ('OOO IT', '111345, Краснодар, ул Лоса, 1', 'itivest@sdu.ru', '85656732132', 'Южный'),
+  ('OOO ITTI', '178345, Воронеж, ул Паре, 1', 'iti45st@sdu.ru', '+75656732890', 'Западный');
+ 
+ 
+ -- Перечень федеральных округов
+ DROP TABLE IF EXISTS fed_district;
+ 
+ CREATE TABLE fed_district (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, -- код округа
+  fd_name VARCHAR(100) NOT NULL		 -- федеральный округ
+   );
+  INSERT INTO
+  fed_district (fd_name)
+VALUES
+  ('Восточный'),
+   ('Сибирский'),
+   ('Уральский'),
+   ('Западно-Сибирский'),
+   ('Северо-Западный'),
+   ('Южный'),
+   ('Западный');
+    
+ 
+   
+-- Таблица Паспорт госпрограммы 
+DROP TABLE IF EXISTS program_pass;
+ 
+ CREATE TABLE program_pass (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,  -- код программы
+  pr_name VARCHAR(100) NOT NULL,						-- наименование программы
+  pr_target TEXT NOT NULL,								-- цель программы
+  pr_begin DATE,										-- дата начала программы
+  pr_length INT UNSIGNED NOT NULL,						-- длительность программы в годах
+  pr_defendant VARCHAR(100) NOT NULL,					-- ответственное министерство
+  pr_fin_type INT UNSIGNED NOT NULL,					-- тип финансирования программы
+  pr_value INT UNSIGNED NOT NULL						-- сумма финансирования программы
+  );
+ 
+  INSERT INTO
+  program_pass (pr_name, pr_target, pr_begin, pr_length, pr_defendant, pr_fin_type, pr_value)
+VALUES
+  ('Образование', 'Улучшить образование', '2020:06:07', 5, 'Минобразования', 6, 300),
+   ('Медицина', 'Улучшить медицину', '2020:07:14', 3, 'Минздрав', 2, 240),
+   ('Цифровизация', 'Изобрести ИИ', '2020:12:22', 8, 'Мининформации', 2, 820);
+ 
+  
+ 
+ 
+ -- Таблица финансирования план
+ DROP TABLE IF EXISTS fin_fed_pl;
+  
+ CREATE TABLE fin_fed_pl (
+  obj_id INT UNSIGNED NOT NULL,
+  pr_id INT UNSIGNED NOT NULL,
+  year_1 INT UNSIGNED,
+  year_2 INT UNSIGNED,
+  year_3 INT UNSIGNED,
+  year_4 INT UNSIGNED, 
+  year_5 INT UNSIGNED
+ );
+
+  INSERT INTO
+  fin_fed_pl (obj_id, pr_id, year_1, year_2, year_3, year_4, year_5)
+VALUES
+  (1, 2, 123, 456, 456, 789, 222),
+  (2, 2, 135, 4456, 4556, 7389, 3222),
+  (3, 2, 134, 456, 456, 789, 227),
+  (4, 2, 114, 458, 786, 123, 226),
+  (5, 1, 124, 46, 667, 24555, 252),
+  (6, 3, 136, 141, 159, 789, 622), 
+  (7, 1, 4534, 3536, 424, 789, 522),
+  (8, 1, 784, 467, 456, 559, 822), 
+  (9, 3, 357, 480, 456, 759, 2256),
+  (10, 3, 890, 861, 456, 749, 564),
+  (5, 1, 459, 741, 456, 785, 342),
+  (2, 2, 111, 981, 456, 783, 288),
+  (7, 3, 1379, 250, 456, 549, 211);
+ 
+ -- Таблица финансирования факт
+ DROP TABLE IF EXISTS fin_fed_fact;
+ 
+ CREATE TABLE fin_fed_fact (
+  obj_id INT UNSIGNED NOT NULL,
+  pr_id INT UNSIGNED NOT NULL,
+  year_1 INT UNSIGNED,
+  year_2 INT UNSIGNED,
+  year_3 INT UNSIGNED,
+  year_4 INT UNSIGNED, 
+  year_5 INT UNSIGNED
+ );
+  INSERT INTO
+  fin_fed_pl (obj_id, pr_id, year_1, year_2, year_3, year_4, year_5)
+VALUES
+  (1, 2, 120, 0, 0, 0, 0),
+  (2, 2, 132, 0, 0, 0, 0),
+  (3, 2, 136, 0, 0, 0, 0),
+  (4, 2, 112, 0, 0, 0, 0),
+  (5, 1, 11, 0, 0, 0, 0),
+  (6, 3, 134, 0, 0, 0, 0), 
+  (7, 1, 411, 0, 0, 0, 0),
+  (8, 1, 345, 0, 0, 0, 0), 
+  (9, 3, 234, 0, 0, 0, 0),
+  (10, 3, 888, 0, 0, 0, 0),
+  (5, 1, 459, 0, 0, 0, 0),
+  (2, 2, 108, 0, 0, 0, 0),
+  (7, 3, 1258, 0, 0, 0, 0);
+ 
+ 
+ -- Таблица контролеров госпрограмм
+  DROP TABLE IF EXISTS inspections;
+ CREATE TABLE inspections (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,  -- код контролера
+  obj_name VARCHAR(100),								-- наименование объекта
+  insp_type INT UNSIGNED NOT NULL,						-- тип контролера
+  insp_name VARCHAR(100) NOT NULL,						-- имя контролера
+  insp_target TEXT NOT NULL,							-- цель проверки
+  insp_date DATE,										-- дата проверки
+  insp_result TEXT NOT NULL,							-- результат проверки
+  media_id VARCHAR(100)									-- ссылка на видео и фото материалы
+  );
+ INSERT INTO
+  inspections (insp_type, obj_name, insp_name, insp_target, insp_date, insp_result, media_id)
+VALUES
+  ('1', 'Больница №2', 'Минздрав', 'Целевое расходование средств', '2020-12-10', 'Нарушения на фото', 21 ),
+  ('2', 'Больница №33', 'ОНФ', 'Достаточность больничных коек', '2020-12-10', 'Нарушения на фото', 25 ),
+  ('3', 'Мединститут Б', 'Иванов П.П.', 'Выявление коррупции', '2020-12-10', 'Документы в приложении', ' ' ),
+  ('3', 'Больница №2', 'Петров АА', 'Деятельность главврача Петровой', '2020-12-10', 'Нарушений нет', ' ' ),
+  ('2', 'Больница №2', 'Медики России', 'Отношения в трудовом коллективе', '2020-12-10', 'Нарушения на фото', 23 ),
+  ('1', 'Больница №2', 'Минфин', 'Целевое расходование средств', '2020-12-10', 'Нарушения на фото', 214 ),
+  ('1', 'Больница №2', 'Роспотребнадзор', 'Достаточность оборудования', '2020-12-10', 'Нарушения на фото', 2115 ),
+  ('1', 'Больница №2', 'Санэпидстанция', 'Санитарное состояние', '2020-12-10', 'Нарушения на фото', 214 ),
+  ('1', 'Больница №2', 'МНиС', 'Целевое расходование средств', '2020-12-10', 'Нарушения на фото', 215 ),
+  ('1', 'Больница №2', 'Счетная палата', 'Целевое расходование средств', '2020-12-10', 'Нарушения на фото', 32 );
+       
+   
+ -- Таблица видов контролеров
+ DROP TABLE IF EXISTS inspectors_type;
+       
+ CREATE TABLE inspectors_type (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ins_type_name VARCHAR(100) NOT NULL  
+ );
+INSERT INTO
+  inspectors_type (ins_type_name)
+VALUES
+('Правительственный контроль'),
+('Контролирующие общественые организации'),
+('Индивдуальный контролер');
+
+ -- Таблица медиа - отчетов
+DROP TABLE IF EXISTS media_facts;
+
+CREATE TABLE media_facts (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  media_type_id INT UNSIGNED NOT NULL,
+  obj_id INT UNSIGNED NOT NULL,
+  filename VARCHAR(255) NOT NULL,
+  size INT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+ INSERT INTO
+  media_facts (media_type_id, obj_id, filename, size, created_at, updated_at)
+VALUES
+(1, 3, 'Иванов дает много', 2345, ' 2020-06-01', NOW() ),
+(1, 3, 'Состояное здания', 23345, '2020-11-15 ', NOW() ),
+(1, 3, 'Лечебный процесс', 2345111, '2020-02-28 ', NOW() );
+
+
+
+-- Таблица типов медиафайлов
+DROP TABLE IF EXISTS media_types;
+
+CREATE TABLE media_types (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name_type VARCHAR(255) NOT NULL UNIQUE
+ );
+INSERT INTO
+  media_types (name_type)
+VALUES
+('фото'),
+('видео'),
+('аудио'),
+('документ');
+
+
+-- Таблица переписки контролеров с объектом программы
+DROP TABLE IF EXISTS messages;
+
+CREATE TABLE messages (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+  from_insp_id INT UNSIGNED NOT NULL,
+  to_obj_id INT UNSIGNED NOT NULL,
+  from_obj_id INT UNSIGNED NOT NULL, 
+  to_insp_id INT UNSIGNED NOT NULL,
+  message TEXT NOT NULL,
+  is_important BOOLEAN,
+  is_delivered BOOLEAN,
+  created_at DATETIME DEFAULT NOW()
+);
+
+
+
+
+-- Таблица типов финансирования
+DROP TABLE IF EXISTS fin_types;
+
+CREATE TABLE fin_types (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  tipes VARCHAR(255) NOT NULL UNIQUE
+);
+ INSERT INTO
+  fin_types (tipes)
+VALUES
+('федеральное'),
+('частное'),
+('государственное партнерство');
+
+ 
+ 
